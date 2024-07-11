@@ -1,0 +1,40 @@
+{
+    "About": [
+        {
+            "title": "Jul. 2022",
+            "cardTitle": "學習階段(一)",
+            "cardSubtitle": "企業實習",
+            "cardDetailedText": "於嘉義某企業擔任實習軟韌體工程師，期間接觸到馬達與GPS這兩個領域，經手的業務包含維護現有的無刷馬達驅動器、汽車用測速照相警示器及無人農機的軌跡產生平台。"
+        },
+        {
+            "title": "Mar. 2023",
+            "cardTitle": "準備階段(一)",
+            "cardSubtitle": "與指導教授討論系統需求",
+            "cardDetailedText": "從擅長的韌體領域跨足純軟體領域時，不知道該從哪裡開始學習，與指導教授經過一番討論後最終決定開發一個以整合各類道路資訊為核心的系統。"
+        },
+        {
+            "title": "Apr. 2023",
+            "cardTitle": "準備階段(二)",
+            "cardSubtitle": "蒐集道路資訊",
+            "cardDetailedText": "確認方向過後開始學習Python，利用Python寫一段爬蟲程式碼，從即時路況的資訊開始，接續測速照相、天氣狀況以及即時影像。"
+        },
+        {
+            "title": "July. 2023",
+            "cardTitle": "學習階段(二)",
+            "cardSubtitle": "加入NCNU WKE進修",
+            "cardDetailedText": "過去專攻韌體領域，對於軟體領域幾乎是一無所知，為了增廣見聞決定加入國立暨南大學WKE實驗室磨練。"
+        },
+        {
+            "title": "Jan. 2024",
+            "cardTitle": "學習階段(三)",
+            "cardSubtitle": "練習課堂所學的知識",
+            "cardDetailedText": "在實驗室與課堂上學習到了資料庫設計的概念，知道如何才能設計出維護性高且查詢速度快的資料庫，配合React寫前端開發出iDriver的雛型。"
+        },
+        {
+            "title": "Jun. 2024",
+            "cardTitle": "學習階段(四)",
+            "cardSubtitle": "練習課堂所學的知識",
+            "cardDetailedText": ""
+        }
+    ]
+}

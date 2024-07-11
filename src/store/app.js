@@ -1,7 +1,7 @@
 import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 
 const initialState = {
-  isSidebarOpen: true,
+  isSidebarOpen: false,
 }
 
 const stateAtom = atom(initialState,
