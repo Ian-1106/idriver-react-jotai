@@ -2,27 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { Box, Drawer, Typography, Divider, Switch, IconButton, TextField, Button, List, ListItem, ListItemText } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { atom, useAtom, useAtomValue } from 'jotai';
 
-export const RoadPOIAtom = atom({
+
+const initialRoadPOIState = {
     '測速照相': false,
     '即時路況': false,
     '危險路段': false,
     '天氣狀況': false,
     '即時影像': false
-});
-
-export const SearchAddressAtom = atom('');
-export const MarkLocationAtom = atom({});
+};
 
 export default function Index({ mapRef }) {
     const [open, setOpen] = useState(false);
-    const [switches, setSwitches] = useAtom(RoadPOIAtom);
+    const [switches, setSwitches] = useState(initialRoadPOIState);
     const [searchText, setSearchText] = useState('');
-    const [searchAddress, setSearchAddress] = useAtom(SearchAddressAtom);
+    const [searchAddress, setSearchAddress] = useState('');
     const [mapHeight, setMapHeight] = useState(0);
-    const searchAddressResult = useAtomValue(SearchAddressResultAtom);
-    const [markLocation, setMarkLocation] = useAtom(MarkLocationAtom);
+    const [searchAddressResult, setSearchAddressResult] = useState([]);
+    const [markLocation, setMarkLocation] = useState({});
 
     useEffect(() => {
         if (mapRef && mapRef.current) {
@@ -50,10 +47,12 @@ export default function Index({ mapRef }) {
 
     const handleButtonClick = () => {
         setSearchAddress(searchText);
+        // Perform the search here and set the results
+        // For example:
+        // setSearchAddressResult(mockSearchResults);
     };
 
     const searchResultonClick = (element) => {
-        // console.log(element);
         setMarkLocation(element);
     };
 

@@ -7,7 +7,7 @@ export default function Login(props) {
   const { state } = props
 
   const handleLogin = (sso) => {
-    window.location.href = `${apiurl}/api/Auth/login?sso=${sso}&state=${encodeURIComponent(state)}`
+    window.location.href = `${apiurl}/api/Auth/ssologin?sso=${sso}&state=${encodeURIComponent(state)}`
   }
 
   return (

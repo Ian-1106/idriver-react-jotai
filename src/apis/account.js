@@ -6,6 +6,6 @@ export const getAccount = async () => {
 }
 
 export const logoutAccount = async () => {
-  const response = await api({ method: "GET", cmd: "api/Auth/logout" })
+  const response = await api({ method: "POST", cmd: "api/Auth/logout" })
   return response
 }

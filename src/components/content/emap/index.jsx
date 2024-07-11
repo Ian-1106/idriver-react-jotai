@@ -8,9 +8,9 @@ export default function Index() {
 
     return (
         <Box sx={{ display: 'flex', flex: '1 1 auto', height: '100vh' }} ref={mapRef}>
-            {/* <Box sx={{ position: 'fixed', top: '50vh', left: 0, zIndex: 999 }}>
+            <Box sx={{ position: 'fixed', top: '50vh', left: 0, zIndex: 999 }}>
                 <SideDrawer mapRef={mapRef} />
-            </Box> */}
+            </Box>
             <MyMap />
         </Box>
     );
