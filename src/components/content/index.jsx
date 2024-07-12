@@ -7,7 +7,7 @@ import EMap from './emap'
 
 export default function index() {
   return (
-    <Box sx={{ flex: "1 1 auto" }}>
+    <Box sx={{ display: 'flex', flex: '1 1 auto', justifyContent: 'center' }}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />

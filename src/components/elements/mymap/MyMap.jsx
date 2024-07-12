@@ -4,6 +4,7 @@ import GoogleMapReact from 'google-map-react';
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "leaflet-routing-machine";
+import useMapStore from '../../../store/map';
 import Config from 'Config';
 
 const { google_maps_api_key } = Config;
@@ -11,7 +12,9 @@ const { google_maps_api_key } = Config;
 export default function Index() {
     const [loading, setLoading] = useState(true);
     const [userLocation, setUserLocation] = useState(null);
+    const [centerLocation, setCenterLocation] = useState(null);
     const [userZoom, setUserZoom] = useState(17);
+    const { setMapState } = useMapStore();
     const googleMapRef = useRef(null);
     const leafletContainerRef = useRef(null);
     const leafletInstanceRef = useRef(null);
@@ -24,11 +27,18 @@ export default function Index() {
                         lat: position.coords.latitude,
                         lng: position.coords.longitude
                     });
+                    setCenterLocation({
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    });
                     setLoading(false);
                 },
                 (error) => {
                     console.error('Error getting user location:', error);
                     setLoading(false);
+                },
+                {
+                    timeout: 10000, // 10 seconds timeout
                 }
             );
         } else {
@@ -71,10 +81,24 @@ export default function Index() {
         };
     }, [userLocation]);
 
+    useEffect(() => {
+        if (centerLocation) {
+            const minZoom = 3, maxZoom = 22, minRange = 100, maxRange = 900;
+            setMapState({
+                lat: centerLocation.lat,
+                lng: centerLocation.lng,
+                range: Math.round(Math.round(minRange + (maxRange - minRange) * (maxZoom - userZoom) / (maxZoom - minZoom)) / 100)
+            });
+        }
+    }, [centerLocation, userZoom]);
+
     const handleGoogleMapDrag = ({ center, zoom }) => {
-        const { lat, lng } = center;
-        const leafletCenter = L.latLng(lat, lng);
-        leafletInstanceRef.current.setView(leafletCenter, zoom);
+        if (leafletInstanceRef.current) {
+            const { lat, lng } = center;
+            setCenterLocation({ lat, lng });
+            const leafletCenter = L.latLng(lat, lng);
+            leafletInstanceRef.current.setView(leafletCenter, zoom);
+        }
     };
 
     const handleGoogleMapZoomChange = (zoom) => {

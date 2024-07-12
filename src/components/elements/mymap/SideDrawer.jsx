@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Drawer, Typography, Divider, Switch, IconButton, TextField, Button, List, ListItem, ListItemText } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import useMapStore from '../../../store/map';
 
 
 const initialRoadPOIState = {
@@ -16,16 +17,25 @@ export default function Index({ mapRef }) {
     const [open, setOpen] = useState(false);
     const [switches, setSwitches] = useState(initialRoadPOIState);
     const [searchText, setSearchText] = useState('');
-    const [searchAddress, setSearchAddress] = useState('');
     const [mapHeight, setMapHeight] = useState(0);
-    const [searchAddressResult, setSearchAddressResult] = useState([]);
     const [markLocation, setMarkLocation] = useState({});
+    const { setMapState } = useMapStore();
 
     useEffect(() => {
         if (mapRef && mapRef.current) {
             setMapHeight(mapRef.current.clientHeight);
         }
     }, [mapRef]);
+
+    useEffect(() => {
+        const trueValues = Object.entries(switches)
+            .filter(([key, value]) => value === true)
+            .map(([key]) => key)
+            .join(',');
+        const resultString = trueValues || '';
+        setMapState({scopes: resultString});
+    }, [switches]);
+    
 
     const toggleDrawer = (open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -47,9 +57,6 @@ export default function Index({ mapRef }) {
 
     const handleButtonClick = () => {
         setSearchAddress(searchText);
-        // Perform the search here and set the results
-        // For example:
-        // setSearchAddressResult(mockSearchResults);
     };
 
     const searchResultonClick = (element) => {
@@ -120,13 +127,7 @@ export default function Index({ mapRef }) {
                             <TextField id="outlined-basic" label="Search" variant="outlined" value={searchText} onChange={handleInputChange} />
                             <Button variant="outlined" sx={{ marginLeft: '1vw' }} onClick={handleButtonClick}>搜尋</Button>
                         </Box>
-                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                            {searchAddressResult && searchAddressResult.length > 0 ? (
-                                <ListView results={searchAddressResult} />
-                            ) : (
-                                <Box></Box>
-                            )}
-                        </Box>
+                        
                     </Box>
                     <Box>
                         <Box sx={{ display: 'flex', marginBottom: '1%', marginLeft: '1%' }}>
