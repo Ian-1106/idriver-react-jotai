@@ -4,25 +4,24 @@ import MyMap from '../../elements/mymap/MyMap';
 import SideDrawer from '../../elements/mymap/SideDrawer';
 import useMapStore from '../../../store/map';
 import { searchNearPOI } from '../../../apis';
-
+import { useQuery } from '@tanstack/react-query';
 
 export default function Index() {
     const mapRef = useRef(null);
-    const { lat, lng, range, scopes } = useMapStore(state => ({ lat: startTransition.lat, lng: state.lng, range: state.range }));
+    const { lat, lng, range, scopes, setMapState } = useMapStore();
+    const { data } = useQuery({
+        queryKey: ['searchNearPOI', { lat, lng, range, scopes }],
+        queryFn: () => searchNearPOI(lat, lng, range, scopes),
+        refetchOnWindowFocus: true,
+        enabled: !!lat && !!lng && !!range && !!scopes
+    });
 
     useEffect(() => {
-        if (lat && lng && range && scopes) {
-            console.log(lat, lng, range, scopes);
-
-            const query = useQuery({
-                queryKey: ['searchNearPOI'],
-                queryFn: () => searchNearPOI(),
-                refetchOnWindowFocus: true
-            })
+        if (data) {
+            setMapState({ pois: data });
+            console.log(data);
         }
-    }, [lat, lng, range, scopes]);
-
-    useEffect();
+    }, [data]);
 
     return (
         <Box sx={{ display: 'flex', flex: '1 1 auto' }} ref={mapRef}>

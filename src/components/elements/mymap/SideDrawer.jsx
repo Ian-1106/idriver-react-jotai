@@ -30,12 +30,17 @@ export default function Index({ mapRef }) {
     useEffect(() => {
         const trueValues = Object.entries(switches)
             .filter(([key, value]) => value === true)
-            .map(([key]) => key)
-            .join(',');
-        const resultString = trueValues || '';
-        setMapState({scopes: resultString});
+            .map(([key]) => key);
+
+        if (trueValues.length === 0) {
+            setMapState({ scopes: '', pois: [] });
+        } else {
+            const resultString = trueValues.join(',');
+            setMapState({ scopes: resultString });
+        }
     }, [switches]);
-    
+
+
 
     const toggleDrawer = (open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -127,7 +132,7 @@ export default function Index({ mapRef }) {
                             <TextField id="outlined-basic" label="Search" variant="outlined" value={searchText} onChange={handleInputChange} />
                             <Button variant="outlined" sx={{ marginLeft: '1vw' }} onClick={handleButtonClick}>搜尋</Button>
                         </Box>
-                        
+
                     </Box>
                     <Box>
                         <Box sx={{ display: 'flex', marginBottom: '1%', marginLeft: '1%' }}>

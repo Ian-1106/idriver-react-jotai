@@ -1,21 +1,22 @@
 import api from "../lib/api";
-import useMapStore from '../store/map';
 
-export const searchNearPOI = async () => {
-    const { lat, lng, range, scopes } = useMapStore()
-
-    let scopesStr = ""
-    for (ss in scopes) {
-        scopesStr += ss
-    }
+export const searchNearPOI = async (lat, lng, range, scopes) => {
+    // lat = 23.97120
+    // lng = 120.947916
+    // range = 3
 
     const cell = {
         lat: lat,
-        lng: lng,
+        lon: lng,
         range: range,
-        scopes: scopesStr
-    }
+        scopes: scopes
+    };
 
-    response = await api({ method: "GET", cmd: "api/LBSE/nearpoi", data: cell })
-    return response
-}
+    try {
+        const response = await api({ method: "GET", cmd: "api/LBSE/nearpoi", data: cell });
+        return response;
+    } catch (error) {
+        console.error("Error fetching POI:", error);
+        throw error;
+    }
+};

@@ -8,13 +8,21 @@ import useMapStore from '../../../store/map';
 import Config from 'Config';
 
 const { google_maps_api_key } = Config;
+const customIcon = new L.Icon({
+    iconUrl: "./Speedlimit.png",
+    shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+    iconSize: [25, 41], // 可以根據需要調整大小
+    iconAnchor: [10, 10],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+});
 
 export default function Index() {
     const [loading, setLoading] = useState(true);
     const [userLocation, setUserLocation] = useState(null);
     const [centerLocation, setCenterLocation] = useState(null);
     const [userZoom, setUserZoom] = useState(17);
-    const { setMapState } = useMapStore();
+    const { pois, setMapState } = useMapStore();
     const googleMapRef = useRef(null);
     const leafletContainerRef = useRef(null);
     const leafletInstanceRef = useRef(null);
@@ -91,6 +99,17 @@ export default function Index() {
             });
         }
     }, [centerLocation, userZoom]);
+
+    useEffect(() => {
+        if (pois.length && leafletInstanceRef.current) {
+            pois.forEach(item => {
+                const { X, Y, CName } = item;
+                L.marker([Y, X], { icon: customIcon })
+                    .bindPopup(`<b>${CName}</b><br />${item.CDes}`)
+                    .addTo(leafletInstanceRef.current);
+            });
+        }
+    }, [pois]);
 
     const handleGoogleMapDrag = ({ center, zoom }) => {
         if (leafletInstanceRef.current) {
