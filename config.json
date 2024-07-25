@@ -1,5 +1,6 @@
 {
   "title": "iDriver",
   "apiurl": "",
-  "cors": true
+  "cors": true,
+  "google_maps_api_key": "AIzaSyD6sjVQnSGvCrI8o5Edib1zHvUDfgLhO_M"
 }

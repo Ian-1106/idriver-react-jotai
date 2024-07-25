@@ -19,7 +19,7 @@ export default function Index() {
     useEffect(() => {
         if (data) {
             setMapState({ pois: data });
-            console.log(data);
+            //console.log(data);
         }
     }, [data]);
 
@@ -29,6 +29,7 @@ export default function Index() {
                 <SideDrawer mapRef={mapRef} />
             </Box>
             <MyMap />
+            
         </Box>
     );
 }

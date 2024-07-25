@@ -7,15 +7,14 @@ import "leaflet-routing-machine";
 import useMapStore from '../../../store/map';
 import Config from 'Config';
 
+
 const { google_maps_api_key } = Config;
-const customIcon = new L.Icon({
-    iconUrl: "./Speedlimit.png",
-    shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-    iconSize: [25, 41], // 可以根據需要調整大小
-    iconAnchor: [10, 10],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41]
-});
+const roadInformationIcons = {
+    "12": "./Speedlimit.png",   // 測速照相
+    "13": "./Traffic.png",      // 即時路況
+    "15": "./Weather.png",      // 天氣狀況
+    "16": "./Monitor.png",      // 即時影像
+};
 
 export default function Index() {
     const [loading, setLoading] = useState(true);
@@ -46,7 +45,7 @@ export default function Index() {
                     setLoading(false);
                 },
                 {
-                    timeout: 10000, // 10 seconds timeout
+                    timeout: 5000
                 }
             );
         } else {
@@ -64,15 +63,6 @@ export default function Index() {
         const OSMUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
         const tileLayer = L.tileLayer(OSMUrl).addTo(leafletInstanceRef.current);
         tileLayer.setOpacity(0);
-
-        const greenIcon = new L.Icon({
-            iconUrl: "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
-            shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-            iconSize: [25, 41],
-            iconAnchor: [12, 41],
-            popupAnchor: [1, -34],
-            shadowSize: [41, 41]
-        });
 
         L.circle([userLocation.lat, userLocation.lng], {
             color: "blue",
@@ -102,14 +92,35 @@ export default function Index() {
 
     useEffect(() => {
         if (pois.length && leafletInstanceRef.current) {
+            leafletInstanceRef.current.eachLayer((layer) => {
+                if (layer instanceof L.Marker) {
+                    leafletInstanceRef.current.removeLayer(layer);
+                }
+            });
+
             pois.forEach(item => {
-                const { X, Y, CName } = item;
-                L.marker([Y, X], { icon: customIcon })
-                    .bindPopup(`<b>${CName}</b><br />${item.CDes}`)
-                    .addTo(leafletInstanceRef.current);
+                const { X, Y, CName, CDes, Type } = item;
+                if (roadInformationIcons[Type]) {
+                    const targetIcon = new L.Icon({
+                        iconUrl: roadInformationIcons[Type],
+                        shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+                        iconSize: [30, 30],
+                        iconAnchor: [15, 30],
+                        popupAnchor: [0, -30],
+                        shadowSize: [41, 41]
+                    });
+                    L.marker([Y, X], { icon: targetIcon })
+                        .bindPopup(`<b>${CName}</b><br />${CDes}`)
+                        .addTo(leafletInstanceRef.current);
+                }
+                else {
+                    console.warn(`No icon defined for type: ${Type}`);
+                }
             });
         }
     }, [pois]);
+
+
 
     const handleGoogleMapDrag = ({ center, zoom }) => {
         if (leafletInstanceRef.current) {
