@@ -6,7 +6,8 @@ const initialState = {
     range: null,
     scopes: '',
     lbseToken: 'FB378D11-FA61-4DBC-8EAB-C3F22C9053CA',
-    pois: []
+    pois: [],
+    weather: {}
 };
 
 const stateAtom = atom(initialState);

@@ -9,7 +9,7 @@ const initialRoadPOIState = {
     '測速照相': false,
     '即時路況': false,
     '危險路段': false,
-    '天氣狀況': false,
+    '天氣狀況': true,
     '即時影像': false
 };
 
