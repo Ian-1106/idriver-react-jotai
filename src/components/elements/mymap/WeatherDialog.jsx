@@ -4,6 +4,8 @@ import useMapStore from "../../../store/map";
 
 export default function WeatherInfo() {
     const { weather } = useMapStore();
+    const stationJson = weather.StationJson;
+    console.log(stationJson);
 
     return (
         <Box sx={{
@@ -15,16 +17,16 @@ export default function WeatherInfo() {
             borderColor: '#C4C5C7',
             borderWidth: '2px',
             display: 'flex',
-            flexDirection: 'column',  // 新增這行以垂直排列內容
+            flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
             padding: '16px'  // 添加内边距
         }}>
-            {weather && weather.stationJson ? (
+            {stationJson ? (
                 <>
-                    <Box>氣象: {weather.stationJson.WeatherElement.Weather}</Box>
-                    <Box>溫度: {weather.stationJson.WeatherElement.AirTemperature} °C</Box>
-                    <Box>濕度: {weather.stationJson.WeatherElement.RelativeHumidity} %</Box>
+                    <Box>氣象: {stationJson.WeatherElement.Weather}</Box>
+                    <Box>溫度: {stationJson.WeatherElement.AirTemperature} °C</Box>
+                    <Box>濕度: {stationJson.WeatherElement.RelativeHumidity} %</Box>
                 </>
             ) : (
                 <Box>無法取得天氣資訊!</Box>
